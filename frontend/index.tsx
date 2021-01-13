@@ -2,8 +2,9 @@ import React from "react";
 import { Box, Text, initializeBlock, useRecords } from "@airtable/blocks/ui";
 import { base, cursor } from "@airtable/blocks";
 import { useWatchable, useLoadable } from "@airtable/blocks/ui";
+import RecordView from "./RecordView";
 
-const colorFieldNames = [
+export const colorFieldNames = [
   "Hintergrundfarbe",
   "Schriftfarbe",
   "Primärfarbe",
@@ -36,30 +37,19 @@ const HelloWorldTypescriptApp = () => {
   const selectedRecords = allRecords.filter((record) =>
     cursor.selectedRecordIds.includes(record.id)
   );
-  const colorPalettes = selectedRecords.map((record) => {
-    const colorList = availableColorFields.map((colorField) => {
-      const hexColor = record.getCellValueAsString(colorField);
-      return (
-        <Box
-          key={colorField.id}
-          style={{ display: "flex", flexDirection: "row" }}
-        >
-          <Text>{`${colorField.name}:`}</Text>
-          <input type="color" value={hexColor} />
-        </Box>
-      );
-    });
-    return (
-      <Box key={record.id} style={{ marginBottom: 20 }}>
-        <Text as="h1" style={{ fontWeight: 700 }}>
-          {record.getCellValueAsString(activeTable.primaryField)}
-        </Text>
-        {colorList}
-      </Box>
-    );
-  });
 
-  return <Box>{colorPalettes}</Box>;
+  return (
+    <Box>
+      {selectedRecords.map((record) => (
+        <RecordView
+          key={record.id}
+          tableId={activeTable.id}
+          recordId={record.id}
+          colorFields={availableColorFields}
+        />
+      ))}
+    </Box>
+  );
 };
 
 initializeBlock(() => <HelloWorldTypescriptApp />);
