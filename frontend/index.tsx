@@ -26,12 +26,20 @@ const HelloWorldTypescriptApp = () => {
 
   const hasColorFields = availableColorFields.length > 0;
   if (!hasColorFields) {
-    return <Text>No color fields found in the currently selected table.</Text>;
+    return (
+      <Box padding={3}>
+        <Text>No color fields found in the currently selected table.</Text>
+      </Box>
+    );
   }
 
   const isAnyRowSelected = cursor.selectedRecordIds.length > 0;
   if (!isAnyRowSelected) {
-    return <Text>No rows selected.</Text>;
+    return (
+      <Box padding={3}>
+        <Text>No rows selected.</Text>
+      </Box>
+    );
   }
 
   const selectedRecords = allRecords.filter((record) =>
@@ -39,7 +47,7 @@ const HelloWorldTypescriptApp = () => {
   );
 
   return (
-    <Box>
+    <Box padding={3}>
       {selectedRecords.map((record) => (
         <RecordView
           key={record.id}

@@ -1,6 +1,6 @@
 import { base } from "@airtable/blocks";
 import Field from "@airtable/blocks/dist/types/src/models/field";
-import { Box, Button, Text, useRecordById } from "@airtable/blocks/ui";
+import { Box, Button, Heading, Text, useRecordById } from "@airtable/blocks/ui";
 import React from "react";
 
 interface FieldColor {
@@ -66,40 +66,74 @@ const RecordView: React.FunctionComponent<Props> = ({
     setDirty(false);
   };
 
-  const colorList = fieldColors.map((fieldColor) => (
-    <Box
-      key={fieldColor.fieldId}
-      style={{ display: "flex", flexDirection: "row" }}
-    >
-      <Text>{`${fieldColor.fieldName}:`}</Text>
-      <input
-        type="color"
-        value={fieldColor.hexColor}
-        onChange={(event) =>
-          onColorChange(fieldColor.fieldId, event.target.value)
-        }
-      />
-    </Box>
+  const colorTableRows = fieldColors.map((fieldColor, index) => (
+    <tr key={fieldColor.fieldId} style={styles.tableRow(index)}>
+      <td style={styles.tableCell}>
+        <Text>{fieldColor.fieldName}</Text>
+      </td>
+      <td style={styles.tableCell}>
+        <input
+          type="color"
+          value={fieldColor.hexColor}
+          onChange={(event) =>
+            onColorChange(fieldColor.fieldId, event.target.value)
+          }
+        />
+      </td>
+      <td style={styles.tableCell}>
+        <Text>{fieldColor.hexColor}</Text>
+      </td>
+    </tr>
   ));
 
   return (
-    <Box style={{ marginBottom: 20 }}>
-      <Text as="h1" style={{ fontWeight: 700 }}>
-        {record.getCellValueAsString(table.primaryField)}
-      </Text>
-      {colorList}
+    <Box marginBottom={4}>
+      <Heading>{record.getCellValueAsString(table.primaryField)}</Heading>
+      <table
+        style={{
+          width: "100%",
+          borderCollapse: "collapse",
+          textAlign: "left",
+          boxShadow: "0 0 10px rgba(0, 0, 0, 0.15)",
+        }}
+      >
+        <thead>
+          <tr style={styles.tableHeader}>
+            <th style={styles.tableCell}>Field</th>
+            <th style={styles.tableCell}>Color</th>
+            <th style={styles.tableCell}>HEX code</th>
+          </tr>
+        </thead>
+        <tbody>{colorTableRows}</tbody>
+      </table>
       {isDirty && (
-        <Box>
-          <Button icon="check" onClick={save}>
-            Save
+        <Box marginTop={3} textAlign="right">
+          <Button marginRight={2} variant="primary" icon="check" onClick={save}>
+            Apply changes
           </Button>
-          <Button icon="redo" onClick={resetToOriginalColors}>
-            Reset
+          <Button icon="x" onClick={resetToOriginalColors}>
+            Cancel
           </Button>
         </Box>
       )}
     </Box>
   );
+};
+
+const styles = {
+  tableHeader: {
+    backgroundColor: "#009879",
+    border: "thin solid #008879",
+    color: "#ffffff",
+  },
+  tableCell: {
+    padding: "4px 10px",
+  },
+  tableRow: (index: number) => ({
+    backgroundColor: index % 2 === 0 ? "transparent" : "#f3f3f3",
+    border: "thin solid #dddddd",
+    ...(index === 0 && { borderTop: "none" }),
+  }),
 };
 
 export default RecordView;
