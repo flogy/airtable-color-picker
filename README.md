@@ -6,6 +6,8 @@
 [![npm](https://img.shields.io/npm/v/airtable-color-picker)](https://www.npmjs.com/package/airtable-color-picker)
 [![GitHub license](https://img.shields.io/github/license/flogy/airtable-color-picker)](https://github.com/flogy/airtable-color-picker/blob/master/LICENSE)
 
+![Screenshot](./img/screenshot.png)
+
 ## Installation
 
 Read Airtable's guide on [how to remix from Github](https://airtable.com/developers/apps/guides/remix-from-github).
