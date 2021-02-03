@@ -4,8 +4,8 @@ import {
   Text,
   Heading,
   TablePicker,
-  useGlobalConfig,
   Switch,
+  useSynced,
 } from "@airtable/blocks/ui";
 
 export const getConfigurationKey = (tableId: string) => [
@@ -15,32 +15,24 @@ export const getConfigurationKey = (tableId: string) => [
 
 const SettingsView = () => {
   const [selectedTable, setSelectedTable] = React.useState(null);
-  const [configuredColorFields, setConfiguredColorFields] = React.useState([]);
 
-  const globalConfig = useGlobalConfig();
+  const [
+    configuredColorFieldIds,
+    setConfiguredColorFieldIds,
+    canSetConfiguredColorFieldIds,
+  ] = useSynced(getConfigurationKey(selectedTable?.id || " "));
 
-  const reloadConfiguratedColorFields = React.useCallback(() => {
+  const configuredColorFields = React.useMemo(() => {
     if (!selectedTable) {
-      setConfiguredColorFields([]);
-      return;
+      return [];
     }
-    const configuredColorFieldIds = globalConfig.get(
-      getConfigurationKey(selectedTable.id)
-    ) as string[];
     if (!configuredColorFieldIds) {
-      setConfiguredColorFields([]);
-      return;
+      return [];
     }
-    setConfiguredColorFields(
-      configuredColorFieldIds.map((fieldId) =>
-        selectedTable.getFieldById(fieldId)
-      )
+    return (configuredColorFieldIds as string[]).map((id) =>
+      selectedTable.getFieldById(id)
     );
-  }, [selectedTable, globalConfig]);
-
-  React.useEffect(() => reloadConfiguratedColorFields(), [
-    reloadConfiguratedColorFields,
-  ]);
+  }, [selectedTable, configuredColorFieldIds]);
 
   const onAddColorField = React.useCallback(
     (colorFieldIdToAdd: string) => {
@@ -51,18 +43,9 @@ const SettingsView = () => {
         ...configuredColorFields.map((field) => field.id),
         colorFieldIdToAdd,
       ];
-      globalConfig.setAsync(
-        getConfigurationKey(selectedTable.id),
-        newColorFieldIds
-      );
-      reloadConfiguratedColorFields();
+      setConfiguredColorFieldIds(newColorFieldIds);
     },
-    [
-      configuredColorFields,
-      globalConfig,
-      reloadConfiguratedColorFields,
-      selectedTable,
-    ]
+    [configuredColorFields, selectedTable, setConfiguredColorFieldIds]
   );
 
   const onRemoveColorField = React.useCallback(
@@ -73,18 +56,9 @@ const SettingsView = () => {
       const newColorFieldIds = configuredColorFields
         .map((field) => field.id)
         .filter((colorFieldId) => colorFieldId !== colorFieldIdToRemove);
-      globalConfig.setAsync(
-        getConfigurationKey(selectedTable.id),
-        newColorFieldIds
-      );
-      reloadConfiguratedColorFields();
+      setConfiguredColorFieldIds(newColorFieldIds);
     },
-    [
-      selectedTable,
-      configuredColorFields,
-      globalConfig,
-      reloadConfiguratedColorFields,
-    ]
+    [selectedTable, configuredColorFields, setConfiguredColorFieldIds]
   );
 
   const colorFieldList = React.useMemo(() => {
@@ -123,6 +97,14 @@ const SettingsView = () => {
     onRemoveColorField,
     onAddColorField,
   ]);
+
+  if (!canSetConfiguredColorFieldIds) {
+    return (
+      <Box padding={3}>
+        <Text>No permission to change settings.</Text>
+      </Box>
+    );
+  }
 
   return (
     <Box padding={3}>
