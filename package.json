@@ -1,8 +1,28 @@
 {
   "name": "airtable-color-picker",
   "version": "0.0.1",
+  "description": "Simple color picker app for your Airtable tables.",
+  "author": "Florian Gyger <info@floriangyger.ch>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flogy/airtable-color-picker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/flogy/airtable-color-picker/issues"
+  },
+  "homepage": "https://github.com/flogy/airtable-color-picker#readme",
+  "keywords": [
+    "airtale",
+    "app",
+    "color",
+    "picker",
+    "hex"
+  ],
   "scripts": {
     "start": "block run",
+    "version": "auto-changelog --breaking-pattern \"BREAKING CHANGE:\" -p && git add CHANGELOG.md",
+    "postversion": "git push origin master --tags && npm publish",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx frontend"
   },
   "dependencies": {
@@ -14,6 +34,7 @@
     "@airtable/blocks-cli": "0.0.61",
     "@typescript-eslint/eslint-plugin": "^3.0.2",
     "@typescript-eslint/parser": "^2.15.0",
+    "auto-changelog": "^2.2.1",
     "eslint": "^6.3.0",
     "eslint-plugin-react": "^7.14.3",
     "eslint-plugin-react-hooks": "^2.0.1",
