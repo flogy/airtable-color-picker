@@ -4,7 +4,7 @@
 
 [![Pull requests are welcome!](https://img.shields.io/badge/PRs-welcome-brightgreen)](#contribute-)
 [![npm](https://img.shields.io/npm/v/airtable-color-picker)](https://www.npmjs.com/package/airtable-color-picker)
-[![GitHub license](https://img.shields.io/github/license/flogy/airtable-color-picker)](https://github.com/flogy/airtable-color-picker/blob/master/LICENSE)
+[![GitHub license](https://img.shields.io/github/license/flogy/airtable-color-picker)](https://github.com/flogy/airtable-color-picker/blob/master/LICENSE.md)
 
 ![Screenshot](./img/screenshot.png)
 
