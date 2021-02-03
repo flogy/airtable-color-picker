@@ -66,12 +66,12 @@ const RecordView: React.FunctionComponent<Props> = ({
     setDirty(false);
   };
 
-  const colorTableRows = fieldColors.map((fieldColor, index) => (
-    <tr key={fieldColor.fieldId} style={styles.tableRow(index)}>
-      <td style={styles.tableCell}>
+  const colorTableRows = fieldColors.map((fieldColor) => (
+    <tr key={fieldColor.fieldId}>
+      <td>
         <Text>{fieldColor.fieldName}</Text>
       </td>
-      <td style={styles.tableCell}>
+      <td>
         <input
           type="color"
           value={fieldColor.hexColor}
@@ -80,7 +80,7 @@ const RecordView: React.FunctionComponent<Props> = ({
           }
         />
       </td>
-      <td style={styles.tableCell}>
+      <td>
         <Text>{fieldColor.hexColor}</Text>
       </td>
     </tr>
@@ -89,19 +89,12 @@ const RecordView: React.FunctionComponent<Props> = ({
   return (
     <Box marginBottom={4}>
       <Heading>{record.getCellValueAsString(table.primaryField)}</Heading>
-      <table
-        style={{
-          width: "100%",
-          borderCollapse: "collapse",
-          textAlign: "left",
-          boxShadow: "0 0 10px rgba(0, 0, 0, 0.15)",
-        }}
-      >
+      <table>
         <thead>
-          <tr style={styles.tableHeader}>
-            <th style={styles.tableCell}>Field</th>
-            <th style={styles.tableCell}>Color</th>
-            <th style={styles.tableCell}>HEX code</th>
+          <tr>
+            <th>Field</th>
+            <th>Color</th>
+            <th>HEX code</th>
           </tr>
         </thead>
         <tbody>{colorTableRows}</tbody>
@@ -118,22 +111,6 @@ const RecordView: React.FunctionComponent<Props> = ({
       )}
     </Box>
   );
-};
-
-const styles = {
-  tableHeader: {
-    backgroundColor: "#009879",
-    border: "thin solid #008879",
-    color: "#ffffff",
-  },
-  tableCell: {
-    padding: "4px 10px",
-  },
-  tableRow: (index: number) => ({
-    backgroundColor: index % 2 === 0 ? "transparent" : "#f3f3f3",
-    border: "thin solid #dddddd",
-    ...(index === 0 && { borderTop: "none" }),
-  }),
 };
 
 export default RecordView;

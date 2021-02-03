@@ -23,10 +23,7 @@ const SettingsView = () => {
   ] = useSynced(getConfigurationKey(selectedTable?.id || " "));
 
   const configuredColorFields = React.useMemo(() => {
-    if (!selectedTable) {
-      return [];
-    }
-    if (!configuredColorFieldIds) {
+    if (!selectedTable || !configuredColorFieldIds) {
       return [];
     }
     return (configuredColorFieldIds as string[]).map((id) =>
@@ -120,24 +117,19 @@ const SettingsView = () => {
           onChange={setSelectedTable}
         />
       </Box>
-      <Box marginTop={1} style={selectedTable || { display: "none" }}>
-        <table
-          style={{
-            width: "100%",
-            borderCollapse: "collapse",
-            textAlign: "left",
-            boxShadow: "0 0 10px rgba(0, 0, 0, 0.15)",
-          }}
-        >
-          <thead>
-            <tr>
-              <th>Single line text field</th>
-              <th>Is color field?</th>
-            </tr>
-          </thead>
-          <tbody>{colorFieldList}</tbody>
-        </table>
-      </Box>
+      {selectedTable && (
+        <Box marginTop={1}>
+          <table>
+            <thead>
+              <tr>
+                <th>Single line text field</th>
+                <th>Is color field?</th>
+              </tr>
+            </thead>
+            <tbody>{colorFieldList}</tbody>
+          </table>
+        </Box>
+      )}
     </Box>
   );
 };
