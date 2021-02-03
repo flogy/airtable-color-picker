@@ -2,6 +2,7 @@
   "name": "airtable-color-picker",
   "version": "0.0.1",
   "scripts": {
+    "start": "block run",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx frontend"
   },
   "dependencies": {
