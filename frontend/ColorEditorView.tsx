@@ -59,7 +59,9 @@ const ColorEditorView = () => {
   if (!isAnyRowSelected) {
     return (
       <Box padding={3}>
-        <Text>No rows selected.</Text>
+        <Text>
+          No rows selected. Please select the rows to edit in the table.
+        </Text>
       </Box>
     );
   }
