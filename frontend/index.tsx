@@ -1,63 +1,17 @@
 import React from "react";
-import { Box, Text, initializeBlock, useRecords } from "@airtable/blocks/ui";
-import { base, cursor } from "@airtable/blocks";
-import { useWatchable, useLoadable } from "@airtable/blocks/ui";
-import RecordView from "./RecordView";
+import { initializeBlock, useSettingsButton } from "@airtable/blocks/ui";
+import SettingsView from "./SettingsView";
+import ColorEditorView from "./ColorEditorView";
 
-export const colorFieldNames = [
-  "Hintergrundfarbe",
-  "Schriftfarbe",
-  "Primärfarbe",
-  "Sekundärfarbe",
-];
+const AirtableColorPicker = () => {
+  const [isShowingSettings, setIsShowingSettings] = React.useState(false);
+  useSettingsButton(() => setIsShowingSettings(!isShowingSettings));
 
-const HelloWorldTypescriptApp = () => {
-  useLoadable(cursor);
-  useWatchable(cursor, ["activeTableId", "selectedRecordIds"]);
-
-  const activeTable = base.getTableById(cursor.activeTableId);
-  const fields = activeTable.fields;
-  const availableColorFields = fields.filter((field) =>
-    colorFieldNames.includes(field.name)
-  );
-  const allRecords = useRecords(activeTable, {
-    fields: availableColorFields,
-  });
-
-  const hasColorFields = availableColorFields.length > 0;
-  if (!hasColorFields) {
-    return (
-      <Box padding={3}>
-        <Text>No color fields found in the currently selected table.</Text>
-      </Box>
-    );
+  if (isShowingSettings) {
+    return <SettingsView />;
+  } else {
+    return <ColorEditorView />;
   }
-
-  const isAnyRowSelected = cursor.selectedRecordIds.length > 0;
-  if (!isAnyRowSelected) {
-    return (
-      <Box padding={3}>
-        <Text>No rows selected.</Text>
-      </Box>
-    );
-  }
-
-  const selectedRecords = allRecords.filter((record) =>
-    cursor.selectedRecordIds.includes(record.id)
-  );
-
-  return (
-    <Box padding={3}>
-      {selectedRecords.map((record) => (
-        <RecordView
-          key={record.id}
-          tableId={activeTable.id}
-          recordId={record.id}
-          colorFields={availableColorFields}
-        />
-      ))}
-    </Box>
-  );
 };
 
-initializeBlock(() => <HelloWorldTypescriptApp />);
+initializeBlock(() => <AirtableColorPicker />);

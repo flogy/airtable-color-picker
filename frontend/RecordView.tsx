@@ -1,7 +1,7 @@
+import React from "react";
 import { base } from "@airtable/blocks";
 import Field from "@airtable/blocks/dist/types/src/models/field";
 import { Box, Button, Heading, Text, useRecordById } from "@airtable/blocks/ui";
-import React from "react";
 
 interface FieldColor {
   fieldId: string;
